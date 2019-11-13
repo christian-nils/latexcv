@@ -57,9 +57,9 @@
 %\usepackage{cmbright}
 %\usepackage[default]{raleway}
 %\usepackage{fetamont}
-\usepackage[default]{gillius}
+%\usepackage[default]{gillius}
 %\usepackage[light,math]{iwona}
-%\usepackage[thin]{roboto} 
+\usepackage{roboto} 
 
 % set font default
 \renewcommand*\familydefault{\sfdefault} 	
@@ -68,8 +68,22 @@
 % more font size definitions
 \usepackage{moresize}		
 
-\usepackage{fontawesome}
+\usepackage{fontawesome5}
 
+\usepackage[%
+  url=true,%                  % print URLs in references, except for the ones removed below
+  backend=biber,%             % use biber instead of bibtex
+  style=authoryear,%          % cite as: (Author 2008)
+  maxbibnames=10,%            % max names in bibliography
+  maxcitenames=2,%            % max names in citation
+  mincitenames=1,%            % if there are more than maxcitenames, shrink to this
+  backref=true,%              % prints page numbers (wrong with \frontmatter and hypertexnames=false)
+  dashed=false,                % do not replace repeated author with a dash in bibliography
+  sorting=ynt
+]{biblatex}                   % Modern bibtex replacement (bibliography mgmt)
+
+\preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}} % to be able to use fullcite with all authors
+\addbibresource{publications.bib}  % Bibliography file
 %----------------------------------------------------------------------------------------
 %	PAGE LAYOUT  DEFINITIONS
 %----------------------------------------------------------------------------------------
@@ -108,10 +122,10 @@
 
 %extended aligning of tabular cells
 \usepackage{array}
+\usepackage{tabularx}
 
-\newcolumntype{x}[1]{%
->{\raggedleft\hspace{0pt}}p{#1}}%
-
+%\newcolumntype{x}[1]{>{\raggedleft\hspace{0pt}}p{#1}}%
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}%
 
 %----------------------------------------------------------------------------------------
 %	GRAPHICS DEFINITIONS
@@ -211,7 +225,7 @@
 % param 1: meta section title
 %
 \newenvironment{metasection}[1] {
-	\vspace{6pt}
+	\vspace{1pt}
 	\begin{center}
 		\textcolor{white}{\large{\uppercase{#1}}}\\
 	\normalsize
@@ -230,21 +244,21 @@
 % param 4:	what was your position
 % param 5:	some words about your contributions
 %
-\newcommand{\cvevent}[5]
+\newcommand{\cvevent}[4]
 {
 \vspace{8pt}
-	\begin{tabular*}{1\mpwidth}{p{0.55\mpwidth}  x{0.42\mpwidth}}
- 	\textcolor{black}{\textbf{#2}} & \textcolor{complcol}{#3}, \textcolor{bgcol}{#1} 
-
-	\end{tabular*}
-\vspace{-12pt}
+	\begin{tabularx}{1\mpwidth}{p{0.70\mpwidth}  R}
+	 \textcolor{black}{\textbf{#2}} & \textcolor{bgcol}{#1} \\
+	 \textcolor{complcol}{\textbf{#3}} & 	 
+	\end{tabularx}
+\vspace{2pt}
 \textcolor{softcol}{\hrule}
-\vspace{6pt}
-	\begin{tabular*}{0.5\mpwidth}{p{\mpwidth}}
-\larrow{softcol}  #4\\[3pt]
-\larrow{softcol}  #5\\[6pt]
-	\end{tabular*}
-
+\vspace{2pt}
+\begin{center}
+\parbox{.95\mpwidth}{
+#4
+}
+\end{center}
 }
 
 % creates a stretched box as 
@@ -284,7 +298,7 @@
 % at this point we simplify our icon-embedding by simply referring to a set of png images.
 % if you find a good way of including svg without conflicting with other packages you can
 % replace this part
-\newcommand{\icon}[3]{\makebox(#2, #2){\textcolor{#3}{\csname fa#1\endcsname}}}	%icon shortcut
+\newcommand{\icon}[3]{\makebox(#2, #2){\textcolor{#3}{\faIcon{#1}}}}	%icon shortcut
 \newcommand{\icontext}[4]{ 						%icon with text shortcut
 	\vcenteredhbox{\icon{#1}{#2}{#4}} \vcenteredhbox{\textcolor{#4}{#3}}
 }
@@ -308,7 +322,7 @@
 %
 %============================================================================%
 \begin{document}
-\fcolorbox{white}{white}{\begin{minipage}[c][0.95\textheight][t]{0.69\linewidth}
+\fcolorbox{white}{white}{\begin{minipage}[c][0.98\textheight][t]{0.69\linewidth}
 
 
 %---------------------------------------------------------------------------------------
@@ -321,32 +335,8 @@
 %}}
 
 % use this for single words, e.g. CV or RESUME etc.
-\colorbox{bgcol}{\makebox[\mpwidth][c]{\HUGE{\textcolor{white}{\uppercase{Jan Küster}} } \textcolor{sectcol}{\rule[-1mm]{1mm}{0.9cm}} \HUGE{\textcolor{white}{\uppercase{Resume}} } }}
-
-%----------------------------------------------------------------------------------------
-%	HEADER IMAGE
-%----------------------------------------------------------------------------------------
-
-
-%\hspace{-1.6cm}
-%\includegraphics[trim= 0 250 0 270,clip,width=1\linewidth+3.1cm]{myfoto.jpg}	%trimming relative to image size!
-\includegraphics[trim= 350 150 0 200, clip ,width=\linewidth]{myfoto.jpg}	%trimming relative to image size
-
-%---------------------------------------------------------------------------------------
-%	SUMMARY
-%----------------------------------------------------------------------------------------
-\transparent{0.85}%
-\vspace{-130pt}
-\hspace{0.4\linewidth}
-\colorbox{bgcol}{
-	\parbox{0.5\linewidth}{
-		\transparent{1}%
-		\begin{center}
-		\larrow{sectcol}\larrow{sectcol}\textcolor{white}{I create awesome resume templates in LaTeX for everyone. Besides that I am working at the University of Bremen and engineer fullstack JS applications with Meteor.}
-		\end{center}
-	}
-}
-\vspace{60pt}
+\colorbox{bgcol}{\makebox[\mpwidth][c]{{\LARGE\textcolor{white}{\uppercase{Christian-Nils Åkerberg Boda}} } \textcolor{sectcol}{\rule[-1mm]{1mm}{.6cm}} \LARGE{\textcolor{white}{\uppercase{ Resume}} } }}
+\vspace{3pt}
 
 %============================================================================%
 %
@@ -359,7 +349,7 @@
 %----------------------------------------------------------------------------------------
 \cvsection{Status}
 
-JavaScript fullstack engineer, M.Sc. Digital Media, focuses on education and healthcare
+Ph.D. candidate in Traffic Safety, M.Sc. Automotive Engineering, M.Sc. Industrial and Mechanical Engineering (Dipl. ing. Arts et Métiers PARISTECH)
 
 \vspace{12pt}
 
@@ -369,66 +359,47 @@ JavaScript fullstack engineer, M.Sc. Digital Media, focuses on education and hea
 \cvsection{Experience}
 
 %
-\cvevent{2016/09 - now}{Fullstack Javascript Engineer}{University of Bremen}{Invent a realtime classroom management using Meteor and React}{Design software architecture and leading development}
+\cvevent{2014/04 - now}{Ph.D. Candidate}{Chalmers University of Technology, Gothenburg}{My Ph.D. work is part of the Driver Interaction with Vulnerable road users (DIV) project. I am studying driver behaviour in interaction with vulnerable road users (i.e., cyclists and pedestrians). I am focusing on better understanding how drivers control their car in intersection and overtaking scenarios. The knowledge gathered in my project could be used, for instance, to improve safety systems' threat assessment algorithms or decision algorithms. More information can be found on the project \textcolor{complcol}{\href{http://divproject.eu}{website}}, any open-source software can be found on my GitHub webpage.}
 
-%\textcolor{softcol}{\hrule}
+\textcolor{softcol}{\hrule}
 
+\cvevent{2013/06 - 2014/03}{Project Assistant}{Chalmers University of Technology, Gothenburg}{Project assistant on a project which exploits the SHRP2 naturalistic driving study. My work on data post-processing and data analysis was used in Chalmers report (accessible to this \textcolor{complcol}{\href{http://www.trb.org/Publications/Blurbs/171327.aspx}{link}}).}
 
-%\cvevent{2014 - 2016}{IT Consultant for IBM XPages and Notes Domino}{We4IT GmbH Bremen}{Realize projects in XPages and We4IT Aveedo, monitor project status, conduct reports}{Integrated Camunda BPMN engine and BPMN.IO modeler in We4IT Aveedo}
+\textcolor{softcol}{\hrule}
 
+\cvevent{2012/09 - 2013/01}{Research Assistant}{Chalmers University of Technology, Gothenburg}{I improved a video annotation tool developed earlier to extract crucial variables to study driver behaviour in rear-end crashes. The tool was developed with MATLAB and used the EuroFOT data.}
 
-%\textcolor{softcol}{\hrule}
+\textcolor{softcol}{\hrule}
 
+\cvevent{2012/06 - 2012/07}{Consultant}{ÅF, Gothenburg}{ÅF consultant for Volvo Cars Corporation. Development of a MatLab-based program to annotate videos recorded by cameras equipping the EuroFOT vehicles. }
 
-\cvevent{2012 - 2014}{Scientific Employee / Software Development}{University of Bremen}{Invented a flexible assessment framework, targeting industrial trainees}{Supervised software development lifecycle, Recruited team members}
+\textcolor{softcol}{\hrule}
 
-%\textcolor{softcol}{\hrule}
-
-%
-\cvevent{2011 / 11}{Project Management Simulation Training}{Getoq Consulting}{Performed a two-day project simulation from management perspective}{Topics included customer contracts, change management, controlling, operational tasks}
-
-%\textcolor{softcol}{\hrule}
-
-
-%
-\cvevent{2010 - 2011}{Student Assistant / Programmer}{otulea.uni-bremen.de}{Realized an online diagnosis platform for workforce literacy development (Flex)}{Modeled software design, implemented various prototypes, conducted usability tests}
-
-\vspace{12pt}
-%---------------------------------------------------------------------------------------
-%	EDUCATION SECTION
-%--------------------------------------------------------------------------------------
-\cvsection{Education}
-
-\cvevent{2015 / 07}{Graduated as M.Sc. Digital Media}{University of Bremen}{Master Thesis: Semi Automated Scoring in Technology Based Assessment}{Developed and evaluated an algorithm for semi automated scoring of spreadsheet data}
-
-%\textcolor{softcol}{\hrule}
-
-%
-\cvevent{2012 - 2013}{Master Project - PrIMA}{University of Bremen}{Co-Invented a touch table application for medical support, co-developed software (Java) }{Formed a scrum team, mainted project dev server (Debian), surveyed target audience}
-
-%\textcolor{softcol}{\hrule}
-
-%
-\cvevent{2012 - 2015}{Master Studies Digital Media}{University of Bremen}{Inter-cultural classes in English, covering special topics in computer science and design}{Professionalized in research methods, software development and e-assessment}
-
-%\textcolor{softcol}{\hrule}
-
-%
-\cvevent{2009 - 2010}{Semester Abroad}{University of Melbourne}{Mastered six months of study and trans-cultural experience in Melbourne, Australia}{Finished machine programming, information visualization, professional essay writing}
+\cvevent{2011/06 - 2011/08}{Trainee}{Sabatier SAS, Vitrolles}{
+	Sabatier SAS (owned by Soudronic http://www.soudronic.com/) is a company which produces industrial machines for manufacturing metallic packaging. My mission was to develop a new software for helping engineers to design the cams, essential parts in their machines. By submitting the different kinematic parameters and dimensions, the software is able to compute and export a file used afterwards for the manufacturing.}
 
 
 \end{minipage}}%
-\fcolorbox{white}{sectcol}{\begin{minipage}[c][0.95\textheight][t]{0.33\linewidth}
+\fcolorbox{white}{sectcol}{\begin{minipage}[c][0.98\textheight][t]{0.33\linewidth}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{myphoto.png}	
+\end{figure}
+
+\begin{center}
+\parbox{0.85\mpwidth}{\larrow{softcol}\textcolor{lightgray}{\textit{Traffic safety researcher with a research interest on \textbf{driver behaviour modelling} and \textbf{vulnerable road user} safety}}}
+\end{center}
 
 \begin{metasection}{Contact}
 
-	\icontext{MapMarker}{12}{Bremen, Germany}{white}\\[6pt]
-	\icontext{MobilePhone}{12}{+49 176 313 *** **}{white}\\[6pt]
-	\iconemail{Send}{12}{info@jankuester.com}{info@jankuester.com}{white}\\[6pt]
-	\iconhref{MousePointer}{12}{http://jankuester.com/}{www.jankuester.com}{white}\\[6pt]
-	\iconhref{Github}{12}{https://github.com/jankapunkt}{https://github.com/jankapunkt}{white}\\[6pt]
-	\iconhref{Twitter}{12}{@Kuester\_Jan}{https://twitter.com/kuester_jan?lang=en}{white}\\[6pt]
+	\iconhref{map-marker-alt}{12}{Ingared, Sweden}{https://www.openstreetmap.org/?mlat=57.85313&mlon=12.46040\%23map=19/57.85313/12.46040}{white}\\[6pt]
+	\icontext{mobile-alt}{12}{+46 (0)7 036 336 77}{white}\\[6pt]
+	\iconemail{envelope}{12}{christian-nils.boda@gadz.org}{christian-nils.boda@gadz.org}{white}\\[6pt]
+	\iconhref{globe-europe}{12}{https://christian-nils.github.io/}{https://christian-nils.github.io/}{white}\\[6pt]
+	\iconhref{github}{12}{christian-nils}{https://github.com/christian-nils}{white}
+	\iconhref{twitter}{12}{@christiannils}{https://twitter.com/christiannils?lang=en}{white}\\[6pt]
+	\iconhref{linkedin}{12}{cboda}{https://www.linkedin.com/in/cboda/?locale=en_US}{white}\\[6pt]
 
 \end{metasection}
 	
@@ -437,16 +408,14 @@ JavaScript fullstack engineer, M.Sc. Digital Media, focuses on education and hea
 %----------------------------------------------------------------------------------------
 
 \begin{metasection}{Fields}
-
-\icontext{Code}{12}{Software Development}{white}\\
-\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\\[6pt]
-
-\icontext{CommentsO}{12}{Consulting}{white}\\
-\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{white}\icon{Star}{12}{white}\\[6pt]
-
-\icontext{CodeFork}{12}{Project Management}{white}\\
-\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{white}\icon{Star}{12}{white}\icon{Star}{12}{white}\icon{Star}{12}{white}\\[6pt]
-
+	
+	\icontext{car-crash}{12}{Traffic safety research}{white}\\[3pt]
+	\icontext{user}{12}{Human factors analyses}{white}\\[3pt]
+	\icontext{user-cog}{12}{Driver behaviour modelling}{white}\\[3pt]
+	\icontext{biking}{12}{Vulnerable road users safety}{white}\\[6pt]
+	\icontext{car-side}{12}{Automotive engineering}{white}\\[3pt]
+	\icontext{cogs}{12}{Mechanical engineering}{white}\\[3pt]
+	\icontext{industry}{12}{Industrial engineering}{white}\\[3pt]
 
 \end{metasection}
 
@@ -454,52 +423,65 @@ JavaScript fullstack engineer, M.Sc. Digital Media, focuses on education and hea
 \begin{metasection}{Technologies}
 
 \textcolor{white}{
-\icontext{Code}{12}{JavaScript}{white} \\[6pt]
-\icontext{Code}{12}{Meteor}{white} \\[6pt]
-\icontext{Fire}{12}{Blaze}{white} \\[6pt]
-\icontext{Database}{12}{MongoDB}{white} \\[6pt]
-\icontext{CodeFork}{12}{Git}{white} \\[6pt]
+\icontext{code}{12}{MATLAB}{white}
+\icontext{vuejs}{12}{Vue.js}{white}
+\icontext{css3}{12}{CSS3}{white} \\[6pt]
+\icontext{python}{12}{Python}{white}
+\icontext{code}{12}{C/C++}{white}
+\icontext{java}{12}{JAVA}{white} \\[6pt]
+\icontext{js}{12}{JavaScript}{white}
+\icontext{pen-fancy}{12}{LaTeX}{white}
+\icontext{robot}{12}{ROS}{white}
 }
 \end{metasection}
 
 \begin{metasection}{Tools}
 
 \textcolor{white}{
-\icontext{Code}{12}{Webstorm}{white} \icontext{CodeFork}{12}{SourceTree}{white}\\[6pt]
-\icontext{Terminal}{12}{Terminal}{white}  \icontext{PaintBrush}{12}{Inkscape}{white}\icontext{Cube}{12}{Blender}{white}
+\icontext{file-code}{12}{VS code}{white}\icontext{paint-brush}{12}{Inkscape}{white}\\[6pt]
+\icontext{cube}{12}{Blender}{white}
 }
 \end{metasection}
 
 \begin{metasection}{Activities}
 
-\textcolor{white}{\LARGE{\icon{Gamepad}{24}{white} \icon{Headphones}{24}{white}  \icon{Bicycle}{24}{white}}}
+\textcolor{white}{\LARGE{\icon{hiking}{24}{white} \icon{laptop-code}{24}{white}  \icon{bicycle}{24}{white}}}
 \end{metasection}
 
 \begin{metasection}{Operating Systems}
 
-\textcolor{white}{\LARGE{\icon{Linux}{24}{white} \icon{Apple}{24}{white}  \icon{Windows}{24}{white}}}
+\textcolor{white}{\LARGE{\icon{linux}{24}{white} \icon{windows}{24}{white}}}
 
 \end{metasection}
 
-%---------------------------------------------------------------------------------------
-%	QR CODE (optional)
-%----------------------------------------------------------------------------------------
-
-\vspace{12pt}
-\begin{center}
-\includegraphics[width=0.35\mpwidth]{qrcode}
-\end{center}
-
 \end{minipage}}
 
-%-------------------------------------------------------------------------------------------------
-%	ARTIFICIAL FOOTER (fancy footer cannot exceed linewidth) 
-%--------------------------------------------------------------------------------------------------
 
-\null
-\vspace*{\fill}
-\hspace{-0.25\linewidth}\colorbox{bgcol}{\makebox[1.5\linewidth][c]{\mystrut \small \textcolor{white}{Coypright 2018 jkuester@uni-bremen.de} $\cdot$ \textcolor{white}{licensed unter MIT license}}}
+\fcolorbox{white}{white}{\begin{minipage}[c][0.95\textheight][t]{1\linewidth}
 
+	%---------------------------------------------------------------------------------------
+	%	EDUCATION SECTION
+	%--------------------------------------------------------------------------------------
+	\cvsection{Education}
+	
+	\cvevent{2011 - 2013}{Chalmers University of Technology, Gothenburg}{M.Sc. Automotive Engineering}{
+		\begin{description}
+			\item[Master thesis] in the Accident Prevention research group, Chalmers University of Technology, I developed an embedded system that automatically provided speed instruction to a professional driver to control on-road testing with participants. Several Phidgets SBC were used to setup the whole system.
+		\item[Automotive Engineering Project] I took part in a project that developed an proof-of-concept Android application to provide a warning to a cyclist and a driver when their travel paths would lead to a crash. 
+		\end{description}
+	}
+	
+	\cvevent{2009 - 2011}{Arts et Métiers PARISTECH, Aix-en-Provence}{M.Sc. Industrial and Mechanical Engineering}{Ranked 92/1107, awarded with the Silver medal.}
+	\cvevent{2007 - 2009}{Lycée Masséna, Nice}{Preparatory classes, MPSI-PSI, equivalent to B.Sc. Mathematics}{}
+	
+	\cvsection{Publications}
+	\nocite{*}
+	\begin{center}
+	\parbox{0.95\mpwidth}{
+		\setlength\bibitemsep{1.5\itemsep}
+	\printbibliography[heading=none]}
+	\end{center}
+	\end{minipage}}%
 %============================================================================%
 %
 %

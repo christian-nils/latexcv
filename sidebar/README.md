@@ -1,5 +1,8 @@
-# Sidebar CV
+# Christian-Nils' CV
 
-*icons using fontawesome
-*compile twice to get transparency of statement box
+- Icons using fontawesome
+- Compile as follows:
 
+```
+pdflatex -> biber -> pdflatex X 2
+```
